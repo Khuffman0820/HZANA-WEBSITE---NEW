@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hzana — Tune into Healing</title>
+<style>
+@font-face{font-family:'Roslindale';src:local('Roslindale Display Medium'),local('Roslindale-DisplayMedium');font-weight:500;font-style:normal;}
+@font-face{font-family:'Roslindale';src:local('Roslindale Display Italic'),local('Roslindale-DisplayItalic');font-weight:400;font-style:italic;}
+@font-face{font-family:'Roslindale Text';src:local('Roslindale Text Regular'),local('Roslindale-TextRegular');font-weight:400;font-style:normal;}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;overflow:hidden;}
+body{font-family:'Roslindale Text','Georgia',serif;color:#fff;cursor:none;}
+
+.cursor{position:fixed;width:4px;height:4px;background:rgba(255,255,255,0.5);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+.cursor-ring{position:fixed;width:26px;height:26px;border:0.5px solid rgba(255,255,255,0.18);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+
+canvas#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;}
+canvas#wave{position:fixed;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;}
+
+/* ── HERO — both elements centered at start ── */
+#hero{
+  position:fixed;inset:0;z-index:20;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  pointer-events:none;
+  gap:18px;
+}
+
+/* HZANA — starts centered, scrolls up */
+#title{
+  will-change:transform,opacity;
+  text-align:center;
+  /* Initial position is inline in the flex column — JS will move it */
+}
+#title h1{
+  font-family:'Roslindale','Georgia',serif;
+  font-weight:500;
+  font-style:normal;
+  font-size:clamp(62px,9.5vw,130px);
+  letter-spacing:12px;
+  color:rgba(255,255,255,0.90);
+  line-height:1;
+  text-shadow:0 0 80px rgba(255,220,180,0.12),0 2px 40px rgba(0,0,0,0.14);
+  opacity:0;animation:fi 2s 0.4s ease forwards;
+}
+
+/* TUNE INTO HEALING — starts just below HZANA, scrolls down */
+#tagline{
+  will-change:transform,opacity;
+  text-align:center;
+}
+#tagline p{
+  font-family:'Roslindale','Georgia',serif;
+  font-weight:400;
+  font-style:italic;
+  font-size:clamp(16px,2.0vw,26px);
+  letter-spacing:1px;
+  color:rgba(255,255,255,0.68);
+  text-shadow:0 1px 20px rgba(0,0,0,0.20);
+  opacity:0;animation:fi 2s 1.0s ease forwards;
+}
+
+/* ── SCROLL HINT ── */
+#hint{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  z-index:30;display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;animation:fi 1.8s 2.0s ease forwards;
+  pointer-events:none;will-change:opacity;
+}
+.ht{font-family:'Roslindale Text','Georgia',serif;font-size:7px;letter-spacing:4.5px;text-transform:uppercase;color:rgba(255,255,255,0.22);white-space:nowrap;}
+.hl{width:0.5px;height:32px;background:linear-gradient(to bottom,rgba(255,255,255,0.28),transparent);animation:p 2.8s ease-in-out infinite;}
+@keyframes p{0%,100%{opacity:0.2;}50%{opacity:0.7;}}
+
+/* CORNERS */
+.corner{position:fixed;z-index:25;font-family:'Roslindale Text','Georgia',serif;font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.14);opacity:0;animation:fi 3s 2.5s ease forwards;line-height:2;}
+.corner-bl{bottom:24px;left:44px;}
+.corner-br{bottom:24px;right:44px;text-align:right;}
+
+/* ── NAV — fades in at center, pure text, no overlay ── */
+#nav{
+  position:fixed;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  z-index:50;
+  display:flex;flex-direction:column;align-items:center;gap:22px;
+  opacity:0;pointer-events:none;
+  will-change:opacity;
+}
+#nav.on{pointer-events:auto;}
+
+/* Menu font: Roslindale Display Medium Italic */
+.nw{
+  font-family:'Roslindale','Georgia',serif;
+  font-weight:500;font-style:italic;
+  font-size:11px;letter-spacing:9px;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);text-decoration:none;
+}
+.nr{width:40px;height:0.5px;background:rgba(255,255,255,0.20);}
+.nl{display:flex;gap:56px;list-style:none;}
+.nl a{
+  font-family:'Roslindale','Georgia',serif;
+  font-weight:500;font-style:italic;
+  font-size:clamp(22px,2.8vw,36px);letter-spacing:1.5px;
+  color:rgba(255,255,255,0.82);text-decoration:none;
+  transition:color 0.3s,text-shadow 0.3s;white-space:nowrap;
+  text-shadow:0 1px 24px rgba(0,0,0,0.18);
+}
+.nl a:hover{color:#fff;text-shadow:0 0 32px rgba(255,230,200,0.35);}
+
+@keyframes fi{from{opacity:0;}to{opacity:1;}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<canvas id="bg"></canvas>
+<canvas id="wave"></canvas>
+
+<!-- Both start centered in the hero flex column -->
+<div id="hero">
+  <div id="title"><h1>HZANA</h1></div>
+  <div id="tagline"><p>Tune into Healing</p></div>
+</div>
+
+<div id="hint">
+  <span class="ht">Scroll to descend</span>
+  <div class="hl"></div>
+</div>
+
+<span class="corner corner-bl">HZ-01 SOL &nbsp;·&nbsp; Patent Pending</span>
+<span class="corner corner-br">Light your frequency.<br/>Let it unfold.</span>
+
+<div id="nav">
+  <a href="hzana_homepage.html" class="nw">H Z A N A</a>
+  <div class="nr"></div>
+  <ul class="nl">
+    <li><a href="hzana_homepage.html">Home</a></li>
+    <li><a href="hzana_device.html#sounds">Explore the Sounds</a></li>
+    <li><a href="hzana_device.html">The Device</a></li>
+    <li><a href="hzana_about.html">About Us</a></li>
+  </ul>
+</div>
+
+<script>
+// ── CURSOR ──────────────────────────────────────────────────────────────────
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){rx+=(mx-rx)*0.09;ry+=(my-ry)*0.09;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+
+// ── SCROLL ──────────────────────────────────────────────────────────────────
+// The hero div keeps both elements centered at p=0.
+// As p increases, we use fixed positioning to animate them apart.
+// We switch from flex-column layout to fixed+absolute once scroll begins.
+
+const heroEl  = document.getElementById('hero');
+const titleEl = document.getElementById('title');
+const tagEl   = document.getElementById('tagline');
+const hintEl  = document.getElementById('hint');
+const navEl   = document.getElementById('nav');
+
+let prog=0, tgt=0, scrollStarted=false;
+
+window.addEventListener('wheel',e=>{
+  tgt=Math.max(0,Math.min(1,tgt+e.deltaY*0.0018));
+},{passive:true});
+let ty0=0;
+window.addEventListener('touchstart',e=>{ty0=e.touches[0].clientY;},{passive:true});
+window.addEventListener('touchmove',e=>{
+  const d=ty0-e.touches[0].clientY;
+  tgt=Math.max(0,Math.min(1,tgt+d*0.005));
+  ty0=e.touches[0].clientY;
+},{passive:true});
+
+// Once scroll starts, pull elements out of flex and fix them
+function initScrollMode(){
+  if(scrollStarted) return;
+  scrollStarted=true;
+
+  // Get current rendered positions of each element
+  const titleRect = titleEl.getBoundingClientRect();
+  const tagRect   = tagEl.getBoundingClientRect();
+
+  // Detach hero from layout
+  heroEl.style.display='none';
+
+  // Fix title at its current position
+  titleEl.style.position='fixed';
+  titleEl.style.left='50%';
+  titleEl.style.top=titleRect.top+'px';
+  titleEl.style.transform='translateX(-50%)';
+  titleEl.style.zIndex='20';
+  document.body.appendChild(titleEl);
+
+  // Fix tagline at its current position
+  tagEl.style.position='fixed';
+  tagEl.style.left='50%';
+  tagEl.style.top=tagRect.top+'px';
+  tagEl.style.transform='translateX(-50%)';
+  tagEl.style.zIndex='20';
+  document.body.appendChild(tagEl);
+
+  // Store initial tops for animation
+  titleEl._top0 = titleRect.top;
+  tagEl._top0   = tagRect.top;
+}
+
+function tickScroll(){
+  prog+=(tgt-prog)*0.055;
+  const p=prog;
+
+  if(p>0.005) initScrollMode();
+
+  if(scrollStarted){
+    const H=window.innerHeight;
+    // Title moves toward top of screen
+    const titleTop = titleEl._top0 - p * (titleEl._top0 - H*0.10);
+    titleEl.style.top=titleTop+'px';
+    titleEl.style.opacity=Math.max(0,1-p*2.6);
+
+    // Tagline moves toward bottom
+    const tagTop = tagEl._top0 + p * (H*0.82 - tagEl._top0);
+    tagEl.style.top=tagTop+'px';
+    tagEl.style.opacity=Math.max(0,1-p*2.6);
+  }
+
+  hintEl.style.opacity=Math.max(0,1-p*7);
+
+  // Nav fades in at center
+  const np=Math.max(0,(p-0.28)/0.52);
+  navEl.style.opacity=np;
+  np>0.01?navEl.classList.add('on'):navEl.classList.remove('on');
+
+  requestAnimationFrame(tickScroll);
+}
+tickScroll();
+
+// ── BACKGROUND ──────────────────────────────────────────────────────────────
+const bgCanvas=document.getElementById('bg');
+const bgCtx=bgCanvas.getContext('2d');
+let W,H;
+
+function drawBackground(){
+  bgCtx.clearRect(0,0,W,H);
+  const hy=H*0.50;
+
+  // SKY — warm peach top-left → dusty mauve → blue-grey at horizon
+  const sky=bgCtx.createLinearGradient(0,0,W,hy);
+  sky.addColorStop(0.00,'#D4917A');
+  sky.addColorStop(0.20,'#C98A8C');
+  sky.addColorStop(0.45,'#B888A8');
+  sky.addColorStop(0.72,'#A888B8');
+  sky.addColorStop(1.00,'#9890B8');
+  bgCtx.fillStyle=sky;
+  bgCtx.fillRect(0,0,W,hy);
+
+  // Sun glow — warm left
+  const sg=bgCtx.createRadialGradient(W*0.22,hy*0.70,0,W*0.22,hy*0.70,W*0.40);
+  sg.addColorStop(0,'rgba(255,195,100,0.36)');
+  sg.addColorStop(0.30,'rgba(240,160,80,0.14)');
+  sg.addColorStop(0.65,'rgba(230,140,60,0.04)');
+  sg.addColorStop(1,'rgba(230,140,60,0)');
+  bgCtx.fillStyle=sg;bgCtx.fillRect(0,0,W,hy);
+
+  // MOUNTAINS
+  bgCtx.fillStyle='rgba(78,68,92,0.70)';
+  bgCtx.beginPath();
+  const peaks=[
+    {x:0.00,y:0.84},{x:0.07,y:0.72},{x:0.13,y:0.62},{x:0.19,y:0.55},
+    {x:0.24,y:0.61},{x:0.29,y:0.51},{x:0.33,y:0.45},{x:0.37,y:0.48},
+    {x:0.41,y:0.53},{x:0.45,y:0.47},{x:0.49,y:0.43},{x:0.53,y:0.48},
+    {x:0.57,y:0.53},{x:0.61,y:0.49},{x:0.65,y:0.56},
+    {x:0.71,y:0.59},{x:0.77,y:0.51},{x:0.81,y:0.57},
+    {x:0.86,y:0.61},{x:0.91,y:0.67},{x:0.96,y:0.73},{x:1.00,y:0.79},
+    {x:1.00,y:1.00},{x:0.00,y:1.00}
+  ];
+  peaks.forEach((pk,i)=>{
+    const px=pk.x*W, py=hy*pk.y;
+    i===0?bgCtx.moveTo(px,py):bgCtx.lineTo(px,py);
+  });
+  bgCtx.closePath();bgCtx.fill();
+
+  // Mountain haze
+  const mh=bgCtx.createLinearGradient(0,hy*0.38,0,hy);
+  mh.addColorStop(0,'rgba(155,140,170,0.14)');
+  mh.addColorStop(1,'rgba(155,140,170,0)');
+  bgCtx.fillStyle=mh;bgCtx.fillRect(0,hy*0.38,W,hy*0.62);
+
+  // WATER
+  const wt=bgCtx.createLinearGradient(0,hy,0,H);
+  wt.addColorStop(0.00,'#8898A8');
+  wt.addColorStop(0.12,'#708090');
+  wt.addColorStop(0.38,'#586878');
+  wt.addColorStop(0.68,'#465668');
+  wt.addColorStop(1.00,'#344858');
+  bgCtx.fillStyle=wt;bgCtx.fillRect(0,hy,W,H-hy);
+
+  // Sun water reflection
+  const sr=bgCtx.createRadialGradient(W*0.25,hy+12,0,W*0.25,hy+12,W*0.30);
+  sr.addColorStop(0,'rgba(255,185,90,0.20)');
+  sr.addColorStop(0.25,'rgba(240,160,70,0.09)');
+  sr.addColorStop(0.65,'rgba(230,140,50,0.02)');
+  sr.addColorStop(1,'rgba(230,140,50,0)');
+  bgCtx.fillStyle=sr;bgCtx.fillRect(0,hy,W,H-hy);
+
+  // Reflected mountains (flipped, dimmer)
+  bgCtx.save();
+  bgCtx.translate(0,hy*2);bgCtx.scale(1,-1);bgCtx.globalAlpha=0.22;
+  bgCtx.fillStyle='rgba(58,52,70,0.85)';
+  bgCtx.beginPath();
+  peaks.forEach((pk,i)=>{
+    const px=pk.x*W,py=hy*pk.y;
+    i===0?bgCtx.moveTo(px,py):bgCtx.lineTo(px,py);
+  });
+  bgCtx.closePath();bgCtx.fill();
+  bgCtx.restore();
+
+  // Shimmer lines on water
+  for(let i=0;i<16;i++){
+    const wy=hy+(H-hy)*(i/16)**1.5;
+    const a=0.016-i*0.0008;
+    if(a<=0)break;
+    bgCtx.strokeStyle=`rgba(185,205,225,${a})`;
+    bgCtx.lineWidth=0.5;bgCtx.beginPath();
+    bgCtx.moveTo(0,wy);bgCtx.lineTo(W,wy);bgCtx.stroke();
+  }
+
+  // Horizon line
+  const hg=bgCtx.createLinearGradient(0,0,W,0);
+  hg.addColorStop(0,'rgba(255,220,150,0)');
+  hg.addColorStop(0.10,'rgba(255,225,155,0.14)');
+  hg.addColorStop(0.28,'rgba(255,238,175,0.62)');
+  hg.addColorStop(0.42,'rgba(255,245,190,0.85)');
+  hg.addColorStop(0.55,'rgba(255,242,185,0.68)');
+  hg.addColorStop(0.72,'rgba(255,230,160,0.25)');
+  hg.addColorStop(0.90,'rgba(255,220,150,0.05)');
+  hg.addColorStop(1,'rgba(255,220,150,0)');
+  bgCtx.fillStyle=hg;bgCtx.fillRect(0,hy-1,W,2);
+}
+
+// ── ETHEREAL MICRO-STRAND WAVE ──────────────────────────────────────────────
+// Hundreds of gossamer micro-lines forming a ribbon of light.
+// Each strand is an independent sinusoidal oscillator at a slightly different
+// frequency/phase, creating harmonic interference patterns across the bundle.
+// The whole ribbon breathes, pulses, and shimmers — slow and meditative.
+
+const wvCanvas=document.getElementById('wave');
+const wvCtx=wvCanvas.getContext('2d');
+let wt2=0;
+
+// ── RIBBON SYSTEM ───────────────────────────────────────────────────────────
+// One coherent ribbon of uniformly-spaced parallel lines.
+// All lines share the SAME master wave shape — they differ only by a tiny
+// vertical offset (their position within the ribbon's cross-section).
+// This makes them read as ONE unified flowing form, not individual hairs.
+
+const N_LINES = 80;   // lines per ribbon half (upper + lower = 160 total)
+
+// Master wave: defines the shared shape all lines follow
+// Uses 4 harmonics at irrational ratios — smooth, organic, never repeating
+function masterWave(xn, t) {
+  // xn: 0→1 across screen, t: time
+  // Spatial scale chosen so ~2-3 full peaks span the screen
+  const ph = xn * Math.PI * 3.8;
+  return (
+      Math.sin(ph               + t * 0.28)                  * 1.000
+    + Math.sin(ph * 0.6180 + 0.9 + t * 0.19)                 * 0.420
+    + Math.sin(ph * 1.6180 + 2.1 + t * 0.34)                 * 0.200
+    + Math.sin(ph * 0.3820 + 1.4 + t * 0.14)                 * 0.140
+  );
+}
+
+// Ribbon amplitude envelope — tapers at screen edges, full in center
+function ribbonEnvelope(xn) {
+  const edgeFade = Math.min(1, xn / 0.06) * Math.min(1, (1 - xn) / 0.06);
+  return edgeFade;
+}
+
+// Color of each line based on x-position (matches reference image palette)
+// Left: warm amber-gold → center-left: bright white-gold → right: cool white
+function lineColor(xn, lineIndex, nTotal, reflected) {
+  // Colorize by x position
+  let r, g, b;
+  if (xn < 0.20) {
+    const m = xn / 0.20;
+    r = 255; g = Math.round(175 + m * 72); b = Math.round(78 + m * 130);
+  } else if (xn < 0.42) {
+    const m = (xn - 0.20) / 0.22;
+    r = 255; g = Math.round(247 + m * 6); b = Math.round(208 + m * 38);
+  } else if (xn < 0.68) {
+    const m = (xn - 0.42) / 0.26;
+    r = Math.round(255 - m * 6); g = Math.round(253 - m * 14); b = Math.round(246 + m * 9);
+  } else {
+    const m = Math.min(1, (xn - 0.68) / 0.32);
+    r = Math.round(249 - m * 26); g = Math.round(239 - m * 30); b = Math.round(255);
+  }
+
+  // Opacity: brightest in center of ribbon, fade at edges
+  const normLine = lineIndex / (nTotal - 1); // 0=inner edge, 1=outer edge
+  // Inner lines (close to horizon spine) are most opaque
+  const alphaByPos = Math.max(0.04, 0.72 - normLine * 0.62);
+  let a = alphaByPos;
+
+  // Screen edge dissolve
+  const env = ribbonEnvelope(xn);
+  a *= env;
+
+  if (reflected) a *= 0.52;
+
+  return `rgba(${r},${g},${b},${Math.min(0.82, a)})`;
+}
+
+// Build line descriptors — each line is just its vertical index within the ribbon
+const ribbonHalfHeight = 110; // px — total half-height of ribbon at its tallest
+
+// Lines are evenly spaced within the ribbon cross-section
+const lines = Array.from({length: N_LINES}, (_, i) => ({
+  index: i,
+  // Normalized 0→1 within ribbon (0=spine, 1=outermost edge)
+  normPos: i / (N_LINES - 1),
+  // Vertical offset from spine: evenly distributed, top half
+  offset: (i / (N_LINES - 1)) * ribbonHalfHeight,
+  // Tiny phase perturbation — keeps lines from being perfectly identical
+  // Small enough that they still read as one form
+  dPhase: i * 0.022,
+  dTime:  i * 0.0008,
+  lw: i < 3 ? 0.9 : i < 12 ? 0.70 : i < 35 ? 0.55 : 0.38,
+}));
+
+// ── Y POSITION ────────────────────────────────────────────────────────────────
+function lineY(line, xn, t, upper, reflected) {
+  const H2 = wvCanvas.height;
+  const hy  = H2 * 0.50;
+  const amp = ribbonHalfHeight * 0.62; // wave amplitude (how far spine moves)
+
+  // Master wave × envelope gives the spine position
+  const spineY = masterWave(xn, t + line.dTime) * amp * ribbonEnvelope(xn);
+
+  // Line offset within ribbon — spread above/below spine
+  const dir = upper ? -1 : 1;
+  const lineOff = dir * line.offset;
+
+  if (reflected) {
+    // Water reflection: flip the spine y, compress offset slightly
+    return hy - spineY + lineOff * 0.70;
+  } else {
+    return hy + spineY + lineOff;
+  }
+}
+
+function resize(){
+  W=window.innerWidth; H=window.innerHeight;
+  bgCanvas.width=W; bgCanvas.height=H;
+  wvCanvas.width=W; wvCanvas.height=H;
+  drawBackground();
+}
+resize();
+window.addEventListener('resize',()=>{resize();});
+
+// ── UNIFIED MAIN LOOP ────────────────────────────────────────────────────────
+let lastT=0;
+function mainLoop(ts){
+  const dt=Math.min(0.05,(ts-lastT)/1000); lastT=ts;
+
+  // Advance wave ribbon
+  wvCtx.clearRect(0,0,wvCanvas.width,wvCanvas.height);
+  const W2=wvCanvas.width, H2=wvCanvas.height;
+
+  // Glows
+  function drawGlow(reflected){
+    const cx=W2*0.28, cxn=cx/W2;
+    const so=masterWave(cxn,wt2)*110*0.62*ribbonEnvelope(cxn);
+    const cy=H2*0.50+(reflected?-so*0.70:so);
+    const a=reflected?0.05:0.13;
+    const g=wvCtx.createRadialGradient(cx,cy,0,cx,cy,W2*0.24);
+    g.addColorStop(0,`rgba(255,200,110,${a})`);g.addColorStop(0.35,`rgba(255,172,78,${a*0.35})`);g.addColorStop(1,`rgba(255,172,78,0)`);
+    wvCtx.fillStyle=g;wvCtx.fillRect(0,0,W2,H2);
+    const cx2=W2*0.66,cxn2=cx2/W2;
+    const so2=masterWave(cxn2,wt2)*110*0.62*ribbonEnvelope(cxn2);
+    const cy2=H2*0.50+(reflected?-so2*0.70:so2);
+    const a2=reflected?0.022:0.048;
+    const g2=wvCtx.createRadialGradient(cx2,cy2,0,cx2,cy2,W2*0.16);
+    g2.addColorStop(0,`rgba(200,218,255,${a2})`);g2.addColorStop(1,`rgba(200,218,255,0)`);
+    wvCtx.fillStyle=g2;wvCtx.fillRect(0,0,W2,H2);
+  }
+  function drawRibbonHalf(upper,reflected){
+    [...lines].sort((a,b)=>b.index-a.index).forEach(line=>{
+      wvCtx.beginPath();let first=true;
+      for(let x=0;x<=W2;x+=3){
+        const xn=x/W2, y=lineY(line,xn,wt2,upper,reflected);
+        if(first){wvCtx.moveTo(x,y);first=false;}else wvCtx.lineTo(x,y);
+      }
+      wvCtx.strokeStyle=lineColor(0.40,line.index,N_LINES,reflected);
+      wvCtx.lineWidth=line.lw*(reflected?0.62:1.0);wvCtx.stroke();
+    });
+  }
+  drawGlow(true);drawGlow(false);
+  drawRibbonHalf(false,true);drawRibbonHalf(true,true);
+  drawRibbonHalf(false,false);drawRibbonHalf(true,false);
+  wt2+=0.010;
+
+  // ── SUBTLE WATER SHIMMER ─────────────────────────────────────────────────
+  // Soft drifting light bands on the water — quiet caustic-like movement
+  const hy = wvCanvas.height * 0.50;
+  const numShimmers = 6;
+  for (let s = 0; s < numShimmers; s++) {
+    const yOff  = hy + (wvCanvas.height - hy) * ((s + 0.5) / numShimmers);
+    const xShift= Math.sin(wt2 * 0.16 + s * 1.2) * wvCanvas.width * 0.06
+                + Math.sin(wt2 * 0.08 + s * 2.5) * wvCanvas.width * 0.03;
+    const bandH = 2 + Math.sin(wt2 * 0.20 + s * 0.9) * 1.2;
+    const bandA = 0.012 + Math.sin(wt2 * 0.13 + s * 1.8) * 0.006;
+    const grad  = wvCtx.createLinearGradient(xShift, 0, xShift + wvCanvas.width * 0.55, 0);
+    grad.addColorStop(0,   'rgba(255,235,205,0)');
+    grad.addColorStop(0.35,`rgba(255,235,205,${bandA})`);
+    grad.addColorStop(0.65,`rgba(255,235,205,${bandA * 0.5})`);
+    grad.addColorStop(1,   'rgba(255,235,205,0)');
+    wvCtx.fillStyle = grad;
+    wvCtx.fillRect(0, yOff - bandH, wvCanvas.width, bandH * 2);
+  }
+
+  requestAnimationFrame(mainLoop);
+}
+requestAnimationFrame(mainLoop);
+</script>
+</body>
+</html>

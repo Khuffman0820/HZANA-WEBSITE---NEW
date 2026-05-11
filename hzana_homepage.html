@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hzana — Healing Frequency Sound Machine</title>
+<style>
+@font-face{font-family:'Roslindale';src:local('Roslindale Display Medium'),local('Roslindale-DisplayMedium');font-weight:500;font-style:normal;font-display:swap;}
+@font-face{font-family:'Roslindale';src:local('Roslindale Display Italic'),local('Roslindale-DisplayItalic');font-weight:400;font-style:italic;font-display:swap;}
+@font-face{font-family:'Roslindale Text';src:local('Roslindale Text Regular'),local('Roslindale-TextRegular');font-weight:400;font-style:normal;font-display:swap;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Roslindale Text','Georgia',serif;background:#E8C8B8;color:#1A0E06;overflow-x:hidden;cursor:none;}
+.cursor{position:fixed;width:8px;height:8px;background:#7A4A28;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(122,74,40,0.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+#gradient-bg{position:fixed;inset:0;z-index:0;transition:background 1.4s ease;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 60px;}
+.nav-top{display:flex;justify-content:center;padding:14px 0 8px;border-bottom:0.5px solid rgba(26,14,6,0.07);}
+.nav-top a{font-family:'Roslindale Text','Georgia',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(26,14,6,0.4);text-decoration:none;transition:color 0.3s;}
+.nav-top a:hover{color:#7A4A28;}
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;padding:12px 0;}
+.nav-logo{font-family:'Roslindale','Georgia',serif;font-size:22px;font-weight:500;letter-spacing:6px;color:#1A0E06;text-transform:uppercase;text-decoration:none;}
+.nav-links{display:flex;gap:40px;list-style:none;align-items:center;}
+.nav-links a{font-family:'Roslindale Text','Georgia',serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(26,14,6,0.5);text-decoration:none;transition:color 0.3s;}
+.nav-links a:hover,.nav-links a.active{color:#7A4A28;}
+.nav-shop{border:0.5px solid rgba(122,74,40,0.4);padding:8px 20px;border-radius:30px;}
+.section{position:relative;z-index:1;}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity 0.9s ease,transform 0.9s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.r1{transition-delay:0.1s;}.r2{transition-delay:0.22s;}.r3{transition-delay:0.36s;}.r4{transition-delay:0.5s;}
+.eyebrow{font-family:'Roslindale Text','Georgia',serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#7A4A28;display:block;margin-bottom:20px;}
+.frost{background:rgba(230,225,245,0.5);border:0.5px solid rgba(255,255,255,0.75);border-radius:16px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+.btn{display:inline-block;font-family:'Roslindale Text','Georgia',serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#1A0E06;border:1px solid rgba(26,14,6,0.35);padding:16px 44px;border-radius:40px;text-decoration:none;transition:background 0.3s;cursor:none;margin:0 8px;}
+.btn:hover{background:rgba(26,14,6,0.06);}
+.btn.primary{background:#1A0E06;color:#F5EDE0;}
+.btn.primary:hover{background:#2C1A0A;}
+footer{position:relative;z-index:1;border-top:0.5px solid rgba(122,74,40,0.12);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;}
+.footer-brand{font-family:'Roslindale','Georgia',serif;font-size:18px;letter-spacing:4px;color:rgba(26,14,6,0.3);text-transform:uppercase;font-weight:500;}
+.footer-note{font-family:'Roslindale','Georgia',serif;font-size:12px;font-style:italic;color:rgba(26,14,6,0.25);}
+.footer-links{display:flex;gap:32px;}
+.footer-links a{font-family:'Roslindale Text','Georgia',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(26,14,6,0.3);text-decoration:none;transition:color 0.3s;}
+.footer-links a:hover{color:#7A4A28;}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;padding:170px 80px 0 80px;overflow:hidden;}
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none;animation:orbFloat 9s ease-in-out infinite;}
+.hero-orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(255,255,255,0.14) 0%,transparent 70%);top:-150px;right:-180px;}
+.hero-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%);bottom:-100px;left:-150px;animation-delay:-4s;}
+@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-28px) scale(1.04);}}
+.hero-title{font-family:'Roslindale','Georgia',serif;font-size:clamp(64px,10vw,140px);font-weight:500;line-height:0.88;color:#1A0E06;letter-spacing:-4px;margin-bottom:16px;}
+.hero-title em{font-style:italic;font-weight:400;color:#7A4A28;}
+.hero-sub{font-family:'Roslindale','Georgia',serif;font-style:italic;font-size:clamp(14px,1.6vw,18px);color:rgba(26,14,6,0.5);letter-spacing:0.5px;margin-bottom:0;}
+.hero-device{width:200px;height:200px;margin:0 auto;position:relative;flex-shrink:0;}
+.device-sphere{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 38% 32%,#F4EDE4 15%,#DDD4C8 55%,#C8C0B6 100%);box-shadow:0 24px 60px rgba(100,70,40,0.2);}
+.device-band{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:128px;height:7px;border-radius:4px;background:linear-gradient(90deg,rgba(245,160,80,0.3),#F5A030,rgba(245,160,80,0.3));box-shadow:0 0 20px 8px rgba(245,160,80,0.35);animation:glowPulse 3s ease-in-out infinite;}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 20px 8px rgba(245,160,80,0.35);}50%{box-shadow:0 0 32px 14px rgba(245,160,80,0.55);}}
+.hero-specs-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:0 0 0;}
+.spec-pill{font-family:'Roslindale Text','Georgia',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(26,14,6,0.45);border:0.5px solid rgba(26,14,6,0.2);padding:7px 16px;border-radius:30px;}
+.scroll-line{width:1px;height:56px;background:linear-gradient(to bottom,#7A4A28,transparent);animation:sPulse 2.2s ease-in-out infinite;margin:0 auto;}
+@keyframes sPulse{0%,100%{opacity:0.3;}50%{opacity:0.9;}}
+
+/* ETYMOLOGY */
+#etymology{padding:100px 60px;}
+.etym-intro{text-align:center;margin-bottom:48px;}
+.etym-intro p{font-family:'Roslindale Text','Georgia',serif;font-size:15px;color:rgba(26,14,6,0.6);max-width:600px;margin:0 auto 16px;line-height:2;}
+.etym-intro p strong{font-weight:500;color:#1A0E06;}
+.etym-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:860px;margin:0 auto;}
+.etym-card{padding:52px 48px;transition:background 0.3s;}
+.etym-card:hover{background:rgba(230,225,245,0.72);}
+.etym-word{font-family:'Roslindale','Georgia',serif;font-size:clamp(48px,7vw,80px);font-weight:500;color:#1A0E06;line-height:1;margin-bottom:10px;}
+.etym-source{font-family:'Roslindale Text','Georgia',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(122,74,40,0.5);margin-bottom:14px;display:block;}
+.etym-meaning{font-family:'Roslindale','Georgia',serif;font-size:20px;font-style:italic;color:#7A4A28;margin-bottom:12px;}
+.etym-desc{font-family:'Roslindale Text','Georgia',serif;font-size:13.5px;color:rgba(26,14,6,0.55);line-height:1.9;}
+.etym-tagline{text-align:center;margin-top:32px;}
+.etym-tagline p{font-family:'Roslindale','Georgia',serif;font-size:18px;font-style:italic;color:rgba(26,14,6,0.38);}
+
+/* FIRST BREATH */
+#first-breath{padding:100px 60px;text-align:center;}
+.fb-inner{max-width:900px;margin:0 auto;}
+.fb-kicker{font-family:'Roslindale Text','Georgia',serif;font-size:15px;color:rgba(26,14,6,0.5);letter-spacing:0.5px;margin-bottom:20px;font-style:italic;}
+.fb-title{font-family:'Roslindale','Georgia',serif;font-size:clamp(48px,8vw,96px);font-weight:500;line-height:0.92;color:#1A0E06;letter-spacing:-3px;margin-bottom:32px;}
+.fb-title em{font-style:italic;font-weight:400;color:#7A4A28;}
+.fb-body{font-family:'Roslindale Text','Georgia',serif;font-size:16px;color:rgba(26,14,6,0.6);max-width:640px;margin:0 auto 40px;line-height:2;}
+.fb-quote{font-family:'Roslindale','Georgia',serif;font-size:clamp(16px,2.2vw,22px);font-style:italic;color:rgba(26,14,6,0.55);max-width:680px;margin:0 auto;line-height:1.65;padding:32px 44px;border-left:2px solid rgba(122,74,40,0.22);}
+
+/* THREE PILLARS */
+#pillars{padding:80px 60px 100px;}
+.pillars-head{text-align:center;margin-bottom:56px;}
+.pillars-head h2{font-family:'Roslindale','Georgia',serif;font-size:clamp(36px,5vw,60px);font-weight:500;color:#1A0E06;line-height:1.05;margin-bottom:10px;}
+.pillars-head h2 em{font-style:italic;font-weight:400;color:#7A4A28;}
+.pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1060px;margin:0 auto;}
+.pillar-card{padding:52px 40px;transition:background 0.3s,transform 0.3s;}
+.pillar-card:hover{background:rgba(230,225,245,0.72);transform:translateY(-4px);}
+.pillar-num{font-family:'Roslindale','Georgia',serif;font-size:64px;font-weight:500;color:rgba(122,74,40,0.1);line-height:1;margin-bottom:16px;}
+.pillar-title{font-family:'Roslindale','Georgia',serif;font-size:24px;font-weight:500;color:#1A0E06;margin-bottom:12px;}
+.pillar-title em{font-style:italic;font-weight:400;color:#7A4A28;}
+.pillar-body{font-family:'Roslindale Text','Georgia',serif;font-size:13.5px;color:rgba(26,14,6,0.55);line-height:1.9;}
+
+/* WHAT HZANA IS */
+#what-hzana{padding:80px 60px 100px;display:flex;justify-content:center;}
+.wh-inner{max-width:860px;width:100%;text-align:center;}
+.wh-title{font-family:'Roslindale','Georgia',serif;font-size:clamp(36px,5vw,60px);font-weight:500;color:#1A0E06;line-height:1.05;margin-bottom:44px;}
+.wh-title em{font-style:italic;font-weight:400;color:#7A4A28;}
+.not-row{display:flex;gap:0;justify-content:center;margin-bottom:44px;border-top:0.5px solid rgba(122,74,40,0.12);border-bottom:0.5px solid rgba(122,74,40,0.12);}
+.not-item{flex:1;padding:28px 20px;border-right:0.5px solid rgba(122,74,40,0.12);}
+.not-item:last-child{border-right:none;}
+.not-label{font-family:'Roslindale Text','Georgia',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(122,74,40,0.4);margin-bottom:8px;display:block;}
+.not-text{font-family:'Roslindale','Georgia',serif;font-size:17px;color:rgba(26,14,6,0.3);text-decoration:line-through;text-decoration-color:rgba(122,74,40,0.25);}
+.we-are-box{padding:40px 52px;}
+.we-are-label{font-family:'Roslindale Text','Georgia',serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#7A4A28;margin-bottom:12px;display:block;}
+.we-are-text{font-family:'Roslindale','Georgia',serif;font-size:clamp(20px,3vw,32px);font-weight:500;color:#1A0E06;line-height:1.3;}
+.we-are-text em{font-style:italic;font-weight:400;color:#7A4A28;}
+
+/* ONE DEVICE */
+#dual-life{padding:80px 60px 100px;}
+.dl-head{text-align:center;margin-bottom:56px;}
+.dl-head h2{font-family:'Roslindale','Georgia',serif;font-size:clamp(36px,5vw,60px);font-weight:500;color:#1A0E06;line-height:1.05;margin-bottom:12px;}
+.dl-head h2 em{font-style:italic;font-weight:400;color:#7A4A28;}
+.dl-head p{font-family:'Roslindale Text','Georgia',serif;font-size:15px;color:rgba(26,14,6,0.5);max-width:540px;margin:0 auto;line-height:2;}
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1060px;margin:0 auto 16px;}
+.dl-card{padding:48px 40px;position:relative;transition:background 0.3s,transform 0.3s;}
+.dl-card:hover{background:rgba(230,225,245,0.72);transform:translateY(-4px);}
+.dl-age{position:absolute;top:22px;right:24px;font-family:'Roslindale Text','Georgia',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(122,74,40,0.4);}
+.dl-scene{font-family:'Roslindale','Georgia',serif;font-size:14px;font-style:italic;color:#7A4A28;margin-bottom:10px;}
+.dl-heading{font-family:'Roslindale','Georgia',serif;font-size:clamp(19px,2.4vw,26px);font-weight:500;color:#1A0E06;line-height:1.2;margin-bottom:14px;}
+.dl-body{font-family:'Roslindale Text','Georgia',serif;font-size:13px;color:rgba(26,14,6,0.55);line-height:1.9;}
+.dl-freq{display:inline-block;margin-top:16px;font-family:'Roslindale Text','Georgia',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7A4A28;border-bottom:1px solid rgba(122,74,40,0.3);padding-bottom:2px;}
+.dl-connector{text-align:center;padding:10px 0;font-family:'Roslindale','Georgia',serif;font-style:italic;font-size:13px;color:rgba(122,74,40,0.38);letter-spacing:1px;}
+
+/* EVERY STATE */
+#every-state{padding:80px 60px 100px;}
+.es-head{text-align:center;margin-bottom:56px;}
+.es-head h2{font-family:'Roslindale','Georgia',serif;font-size:clamp(32px,4.5vw,56px);font-weight:500;color:#1A0E06;line-height:1.05;margin-bottom:10px;}
+.es-head p{font-family:'Roslindale','Georgia',serif;font-size:16px;font-style:italic;color:rgba(26,14,6,0.42);}
+.es-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;max-width:1060px;margin:0 auto;}
+.es-card{padding:34px 26px;transition:background 0.3s,transform 0.3s;}
+.es-card:hover{background:rgba(230,225,245,0.72);transform:translateY(-4px);}
+.es-name{font-family:'Roslindale','Georgia',serif;font-size:22px;font-weight:500;color:#1A0E06;margin-bottom:7px;}
+.es-freq{font-family:'Roslindale Text','Georgia',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7A4A28;margin-bottom:11px;display:block;}
+.es-body{font-family:'Roslindale Text','Georgia',serif;font-size:12.5px;color:rgba(26,14,6,0.5);line-height:1.85;}
+
+/* BENEFITS */
+#benefits{padding:80px 60px 100px;}
+.ben-layout{max-width:860px;margin:0 auto;}
+.ben-content{}
+.ben-title{font-family:'Roslindale','Georgia',serif;font-size:clamp(34px,4vw,48px);font-weight:500;color:#1A0E06;margin-bottom:32px;}
+.tab-row{display:flex;border-bottom:1px solid rgba(122,74,40,0.15);margin-bottom:32px;}
+.tab-btn{font-family:'Roslindale Text','Georgia',serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(26,14,6,0.4);padding:11px 22px 13px;border:none;background:none;cursor:none;transition:color 0.3s;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab-btn.active{color:#1A0E06;border-bottom-color:#7A4A28;}
+.tab-panel{display:none;}.tab-panel.active{display:block;}
+.ben-item{display:flex;gap:16px;padding:18px 0;border-bottom:0.5px solid rgba(122,74,40,0.1);align-items:flex-start;}
+.ben-item:last-child{border-bottom:none;}
+.ben-plus{font-family:'Roslindale','Georgia',serif;font-size:17px;color:#7A4A28;font-weight:500;flex-shrink:0;margin-top:2px;}
+.ben-text h4{font-family:'Roslindale','Georgia',serif;font-size:16px;font-weight:500;color:#1A0E06;margin-bottom:3px;}
+.ben-text p{font-family:'Roslindale Text','Georgia',serif;font-size:13px;color:rgba(26,14,6,0.55);line-height:1.85;}
+
+/* BUILT WITH INTENTION */
+#intention{padding:80px 60px 100px;}
+.int-head{text-align:center;margin-bottom:52px;}
+.int-head h2{font-family:'Roslindale','Georgia',serif;font-size:clamp(30px,4vw,50px);font-weight:500;color:#1A0E06;line-height:1.1;margin-bottom:10px;}
+.int-head h2 em{font-style:italic;font-weight:400;color:#7A4A28;}
+.int-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto;}
+.int-card{padding:40px 30px;transition:background 0.3s,transform 0.3s;}
+.int-card:hover{background:rgba(230,225,245,0.72);transform:translateY(-4px);}
+.int-num{font-family:'Roslindale','Georgia',serif;font-size:48px;font-weight:500;color:rgba(122,74,40,0.1);line-height:1;margin-bottom:13px;}
+.int-title{font-family:'Roslindale','Georgia',serif;font-size:20px;font-weight:500;color:#1A0E06;margin-bottom:9px;}
+.int-body{font-family:'Roslindale Text','Georgia',serif;font-size:13px;color:rgba(26,14,6,0.55);line-height:1.9;}
+
+/* STORY TEASER */
+#story-teaser{padding:80px 60px 100px;display:flex;justify-content:center;}
+.st-inner{max-width:740px;text-align:center;}
+.st-pull{font-family:'Roslindale','Georgia',serif;font-size:clamp(20px,3vw,36px);font-style:italic;color:#1A0E06;line-height:1.5;margin-bottom:22px;}
+.st-body{font-family:'Roslindale Text','Georgia',serif;font-size:15px;color:rgba(26,14,6,0.58);line-height:2;margin-bottom:32px;max-width:580px;margin-left:auto;margin-right:auto;}
+.st-link{font-family:'Roslindale Text','Georgia',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#7A4A28;text-decoration:none;border-bottom:1px solid rgba(122,74,40,0.35);padding-bottom:3px;}
+
+/* GLOBAL AMBIENT WAVE */
+#ambientWave{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;}
+#ambientWave.visible{opacity:1;}
+/* CTA */
+#shop{padding:140px 60px;text-align:center;}
+.cta-title{font-family:'Roslindale','Georgia',serif;font-size:clamp(44px,7.5vw,88px);font-weight:500;color:#1A0E06;line-height:0.95;letter-spacing:-2px;margin-bottom:18px;}
+.cta-title em{font-style:italic;font-weight:400;color:#7A4A28;}
+.cta-sub{font-family:'Roslindale Text','Georgia',serif;font-size:15px;color:rgba(26,14,6,0.4);margin-bottom:40px;letter-spacing:0.5px;}
+
+/* SCROLLSPY RAIL */
+#scrollspy{position:fixed;right:32px;top:50%;transform:translateY(-50%);z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:0;pointer-events:none;}
+.spy-item{display:flex;align-items:center;gap:12px;padding:10px 0;pointer-events:auto;cursor:pointer;opacity:0.22;transition:opacity 0.5s ease;}
+.spy-item:hover,.spy-item.active{opacity:1;}
+.spy-line{width:20px;height:0.5px;background:#7A4A28;transition:width 0.5s ease,background 0.5s ease;flex-shrink:0;}
+.spy-item.active .spy-line{width:32px;background:#7A4A28;}
+.spy-label{font-family:'Roslindale Text','Georgia',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:#7A4A28;white-space:nowrap;text-align:right;transition:color 0.5s;}
+</style>
+</head>
+<body>
+<canvas id="ambientWave"></canvas>
+<div id="scrollspy"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div id="gradient-bg"></div>
+
+<nav>
+  <div class="nav-top">
+    <a href="hzana_device.html#sounds">Explore the Sounds</a>
+  </div>
+  <div class="nav-bottom">
+    <a href="hzana_homepage.html" class="nav-logo">Hzana</a>
+    <ul class="nav-links">
+      <li><a href="hzana_homepage.html" class="active">Home</a></li>
+      <li><a href="hzana_device.html">The Device</a></li>
+      <li><a href="hzana_about.html">About Us</a></li>
+      <li><a href="#shop" class="nav-shop">Shop</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="section" id="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;">
+    <span class="eyebrow reveal" style="text-align:left;">H Z A N A</span>
+    <h1 class="hero-title reveal r1">Powered by Sound.<br/><em>Designed for<br/>Stillness.</em></h1>
+    <p class="hero-sub reveal r2" style="font-style:italic;">A portal to balance, renewal, and deeper connection.</p>
+    </div>
+  <div style="position:relative;z-index:1;width:100%;display:flex;justify-content:center;padding:40px 0 0;"><div class="hero-device reveal r3"><div class="device-sphere"></div><div class="device-band"></div>
+    </div></div>
+</div>
+    <div style="position:relative;z-index:1;width:100%;display:flex;justify-content:center;"><div class="scroll-line reveal r4"></div></div>
+  </div>
+</section>
+
+<!-- ETYMOLOGY -->
+<section class="section" id="etymology">
+  <div class="etym-intro reveal">
+    <span class="eyebrow" style="text-align:center;">Behind the Name</span>
+    <p>Designed to blend <strong>science and soul</strong>, Hzana uses carefully tuned frequencies to guide your body back to its natural rhythm. Each tone gently shifts your state — from tension to ease, from noise to clarity, from scattered to still.</p>
+    <p>There is no right way to use Hzana. Only what feels aligned in the moment.</p>
+  </div>
+  <div class="etym-grid">
+    <div class="etym-card frost reveal r1">
+      <div class="etym-word">Hz</div>
+      <span class="etym-source">Hertz · Unit of Frequency</span>
+      <div class="etym-meaning">The language of sound.</div>
+      <p class="etym-desc">Every frequency is measured in Hertz — the universal unit of vibration. Hzana is built around 10 carefully selected healing frequencies, each tuned to support a different state of mind and body.</p>
+    </div>
+    <div class="etym-card frost reveal r2">
+      <div class="etym-word">Sana</div>
+      <span class="etym-source">Spanish · "To Heal"</span>
+      <div class="etym-meaning">The intention behind it all.</div>
+      <p class="etym-desc">Sana means to heal — to restore what has been worn down, to return the body to its natural state of ease. Together, Hz + Sana = healing through sound.</p>
+    </div>
+  </div>
+  <div class="etym-tagline reveal r3"><p>Healing through sound.</p></div>
+</section>
+
+
+
+
+
+<!-- SCIENCE OF SOUND -->
+<section class="section" id="science">
+  <div style="max-width:800px;margin:0 auto;text-align:center;padding:80px 60px;">
+    <span class="eyebrow reveal" style="text-align:center;">The Science of Sound</span>
+    <blockquote style="font-family:'Roslindale','Georgia',serif;font-size:clamp(22px,3vw,36px);font-style:italic;font-weight:400;color:#1A0E06;line-height:1.55;margin-bottom:28px;" class="reveal r1">"Hzana marries the wisdom of ancient sound therapy with modern, elevated design — delivering precise healing frequencies through a device that feels at home in any space."</blockquote>
+    <p style="font-family:'Roslindale Text','Georgia',serif;font-size:15px;color:rgba(26,14,6,0.55);line-height:2;max-width:620px;margin:0 auto;" class="reveal r2">Hzana offers curated, precise healing sound frequencies designed to support stress reduction, sleep quality, and nervous system regulation. Emerging science shows benefits in cellular regeneration — delivered through 40 original sound environments, composed entirely from natural elements.</p>
+  </div>
+</section>
+
+<!-- FROM FIRST BREATH -->
+<section class="section" id="first-breath">
+  <div class="fb-inner">
+    <p class="fb-kicker reveal">A sound experience for the nervous system — at every stage of life.</p>
+    <h2 class="fb-title reveal r1">From first breath<br/>to <em>deep rest</em></h2>
+    <p class="fb-body reveal r2">Hzana is more than a sound machine. It is a portal to balance, renewal, and deeper connection. Powered by healing frequencies, Hzana uses vibrational sound to soothe the nervous system, support cellular restoration, and awaken the body's natural capacity for healing.</p>
+    <blockquote class="fb-quote reveal r3">"It's more than sound. It's an experience that invites your body to rest, recalibrate, and thrive."</blockquote>
+  </div>
+</section>
+
+<!-- THREE PILLARS -->
+<section class="section" id="pillars">
+  <div class="pillars-head">
+    <span class="eyebrow reveal" style="text-align:center;">The Three Pillars</span>
+    <h2 class="reveal r1">A deeper kind<br/>of <em>experience</em></h2>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar-card frost reveal r1">
+      <div class="pillar-num">01</div>
+      <h3 class="pillar-title">Sound <em>Healing</em></h3>
+      <p class="pillar-body">10 original healing frequencies. 40 immersive sound journeys composed entirely from natural elements — water, air, and live instruments. Nothing sourced or reused. Every layer intentionally crafted to feel alive.</p>
+    </div>
+    <div class="pillar-card frost reveal r2">
+      <div class="pillar-num">02</div>
+      <h3 class="pillar-title">Light <em>Therapy</em></h3>
+      <p class="pillar-body">Seven ambient light colors, each paired to a specific healing frequency. A circadian-inspired glow designed to signal your body — not disrupt it. 10 adjustable brightness levels from the softest nightlight to full warmth.</p>
+    </div>
+    <div class="pillar-card frost reveal r3">
+      <div class="pillar-num">03</div>
+      <h3 class="pillar-title">Daily <em>Practice</em></h3>
+      <p class="pillar-body">Hzana is not background noise. It is a practice. A moment carved from the noise of the day to return to yourself. Use it for sleep, meditation, travel, or focused work. It meets you wherever you are.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT HZANA IS -->
+<section class="section" id="what-hzana">
+  <div class="wh-inner">
+    <span class="eyebrow reveal" style="text-align:center;">What Hzana Is</span>
+    <h2 class="wh-title reveal r1">Not a gadget.<br/><em>A ritual.</em></h2>
+    <div class="not-row reveal r2">
+      <div class="not-item"><span class="not-label">Not</span><div class="not-text">A sound machine</div></div>
+      <div class="not-item"><span class="not-label">Not</span><div class="not-text">A baby product</div></div>
+      <div class="not-item"><span class="not-label">Not</span><div class="not-text">A wellness gadget</div></div>
+    </div>
+    <div class="we-are-box frost reveal r3">
+      <span class="we-are-label">We Are</span>
+      <div class="we-are-text">A ritual for regulation —<br/><em>from infancy to adulthood.</em></div>
+    </div>
+  </div>
+</section>
+
+<!-- ONE DEVICE EVERY MOMENT -->
+<section class="section" id="dual-life">
+  <div class="dl-head">
+    <span class="eyebrow reveal" style="text-align:center;">One Device · Every Moment</span>
+    <h2 class="reveal r1">Same product.<br/><em>Different life moment.</em></h2>
+    <p class="reveal r2">Designed to support every state your body moves through — from the very first days of life to the quiet moments only adults understand.</p>
+  </div>
+  <div class="dl-grid">
+    <div class="dl-card frost reveal r1">
+      <span class="dl-age">4 Hz · Deep Rest</span>
+      <div class="dl-scene">Sleep</div>
+      <div class="dl-heading">The body finally lets go.</div>
+      <p class="dl-body">At 2am, in a quiet nursery, a baby falls into the deepest sleep he's had in days. The 4 Hz delta frequency asks nothing of the nervous system — it simply holds it. Soft enough for a newborn. Powerful enough to last through the night.</p>
+    </div>
+    <div class="dl-card frost reveal r2">
+      <span class="dl-age">432 Hz · Clarity & Peace</span>
+      <div class="dl-scene">Evening Wind-Down</div>
+      <div class="dl-heading">A moment that finally belongs to you.</div>
+      <p class="dl-body">The same frequency. A different life. The house is finally quiet. You press a button, close your eyes, and let the sound do what the day couldn't — return you to yourself. The nervous system doesn't age out of needing care.</p>
+    </div>
+  </div>
+  <div class="dl-connector reveal">same device · different life moment</div>
+  <div class="dl-grid">
+    <div class="dl-card frost reveal r1">
+      <span class="dl-age">528 Hz · Love & Renewal</span>
+      <div class="dl-scene">Postpartum</div>
+      <div class="dl-heading">When everything is tender and nothing is certain.</div>
+      <p class="dl-body">There is a season that asks everything of you and offers everything in return. In those early hours — the ones no one talks about — Hzana becomes an anchor. A soft sound. A warm light. No demands. Just presence.</p>
+    </div>
+    <div class="dl-card frost reveal r2">
+      <span class="dl-age">741 Hz · Creativity & Flow</span>
+      <div class="dl-scene">Deep Work</div>
+      <div class="dl-heading">Clarity without force.</div>
+      <p class="dl-body">Between calls. Before a hard conversation. During a creative session that needs to break open. 741 Hz dissolves the fog and lets the mind find its edge — not through effort, but through sound doing exactly what it was designed to do.</p>
+    </div>
+  </div>
+  <div class="dl-connector reveal">same device · different life moment</div>
+  <div class="dl-grid">
+    <div class="dl-card frost reveal r1">
+      <span class="dl-age">396 Hz · Release</span>
+      <div class="dl-scene">Anxiety & Overwhelm</div>
+      <div class="dl-heading">The spiral slows. The body remembers it is safe.</div>
+      <p class="dl-body">When the weight of the day becomes too much to carry, 396 Hz helps the nervous system let go of what it's holding. Not through force — through frequency. The body knows how to reset when it's given permission.</p>
+    </div>
+    <div class="dl-card frost reveal r2">
+      <span class="dl-age">7.83 Hz · Grounding</span>
+      <div class="dl-scene">Travel</div>
+      <div class="dl-heading">Grounded, balanced, anywhere.</div>
+      <p class="dl-body">Hotel rooms. Long flights. Unfamiliar places. The 7.83 Hz Schumann Resonance — Earth's own frequency — reminds the body where it belongs. Hzana is compact enough to carry, powerful enough to make anywhere feel like home.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EVERY STATE -->
+<section class="section" id="every-state">
+  <div class="es-head">
+    <span class="eyebrow reveal" style="text-align:center;">Designed For</span>
+    <h2 class="reveal r1">Every state your body moves through</h2>
+    <p class="reveal r2">Regulates · Calms · Restores</p>
+  </div>
+  <div class="es-grid" id="statesGrid"></div>
+</section>
+
+<!-- BENEFITS -->
+<section class="section" id="benefits">
+  <div class="ben-layout">
+    <div class="ben-content reveal r2">
+      <h2 class="ben-title">The Benefits</h2>
+      <div class="tab-row">
+        <button class="tab-btn active" onclick="switchTab('physical',this)">Physical</button>
+        <button class="tab-btn" onclick="switchTab('emotional',this)">Emotional</button>
+        <button class="tab-btn" onclick="switchTab('mental',this)">Mental</button>
+      </div>
+      <div class="tab-panel active" id="tab-physical">
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Deep Relaxation & Stress Relief</h4><p>Calms the nervous system, lowering heart rate and blood pressure — returning the body to its natural state of ease.</p></div></div>
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Improved Sleep Quality</h4><p>Helps regulate circadian rhythms and promote restorative rest for all ages — from newborns to adults.</p></div></div>
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Enhanced Cellular Healing</h4><p>Supports the body's natural repair process. Emerging science points to benefits in cellular regeneration and DNA repair.</p></div></div>
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Pain & Tension Reduction</h4><p>Soothes muscle tightness, eases physical discomfort, and supports the body's natural recovery.</p></div></div>
+      </div>
+      <div class="tab-panel" id="tab-emotional">
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Release of Stored Tension</h4><p>Gently dissolves emotional blockages and restores energetic balance throughout the body.</p></div></div>
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Elevated Mood</h4><p>Promotes feelings of joy, calm, and emotional stability — even on the hardest days.</p></div></div>
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Greater Self-Connection</h4><p>Strengthens inner awareness and emotional resilience with consistent practice.</p></div></div>
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Emotional Reset</h4><p>Helps the body let go of stress, worry, and emotional heaviness — making space for clarity.</p></div></div>
+      </div>
+      <div class="tab-panel" id="tab-mental">
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Improved Focus & Clarity</h4><p>Supports sharper concentration and productivity by quieting mental noise.</p></div></div>
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Reduced Anxiety & Overthinking</h4><p>Quiets racing thoughts and mental fatigue through intentional frequency exposure.</p></div></div>
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Enhanced Mind-Body Connection</h4><p>Aligns brainwave states for deeper harmony, mindfulness, and presence.</p></div></div>
+        <div class="ben-item"><span class="ben-plus">+</span><div class="ben-text"><h4>Creative Flow</h4><p>Unlocks imagination and problem-solving potential — ideal for deep work sessions.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- STORY TEASER -->
+<section class="section" id="story-teaser">
+  <div class="st-inner">
+    <span class="eyebrow reveal" style="text-align:center;">Our Story</span>
+    <p class="st-pull reveal r1">"Hzana began during a time when we needed it most."</p>
+    <p class="st-body reveal r2">Our first baby became seriously ill at just three months old. In that season of fear and exhaustion, we discovered the quiet power of healing frequencies. Within an hour, he fell asleep for the first time in days. What began as something for our children became something for us — and now, for you.</p>
+    <a href="hzana_about.html#journey" class="st-link reveal r3">Read the full story →</a>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" id="shop">
+  <span class="eyebrow reveal" style="text-align:center;display:block;">Hzana™ · Patent Pending · HZ-01 SOL</span>
+  <h2 class="cta-title reveal r1">Bring stillness<br/>into your <em>home</em></h2>
+  <p class="cta-sub reveal r2">For the moments we all need to be held.</p>
+  <div class="reveal r3">
+    <a href="#" class="btn primary">Shop Hzana</a>
+    <a href="hzana_about.html" class="btn">Our Story</a>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">Hzana</span>
+  <span class="footer-note">Healing through sound.</span>
+  <div class="footer-links">
+    <a href="hzana_device.html">The Device</a>
+    <a href="hzana_about.html">About Us</a>
+  </div>
+</footer>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function anim(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+const grads=[
+  {stop:0,   bg:'radial-gradient(ellipse at 60% 40%, #E8C8B8 0%, #DDB8A8 35%, #C8B8C0 100%)'},
+  {stop:0.11,bg:'radial-gradient(ellipse at 35% 55%, #E2C0B0 0%, #D4B0A8 35%, #C4B0C8 100%)'},
+  {stop:0.22,bg:'radial-gradient(ellipse at 65% 38%, #D8B8C0 0%, #CAA8C0 35%, #B8B0D0 100%)'},
+  {stop:0.33,bg:'radial-gradient(ellipse at 30% 58%, #CEB8C8 0%, #C0A8D0 35%, #ACBAD8 100%)'},
+  {stop:0.44,bg:'radial-gradient(ellipse at 70% 42%, #C4B4D0 0%, #B4B0D8 35%, #A4C0E0 100%)'},
+  {stop:0.55,bg:'radial-gradient(ellipse at 42% 60%, #BCBAD4 0%, #AEC0DC 35%, #A8CAE4 100%)'},
+  {stop:0.66,bg:'radial-gradient(ellipse at 58% 44%, #B8BED8 0%, #B0C4E0 35%, #B0D0E8 100%)'},
+  {stop:0.77,bg:'radial-gradient(ellipse at 38% 54%, #B4C0D8 0%, #AEC8E4 35%, #B4D4EC 100%)'},
+  {stop:0.88,bg:'radial-gradient(ellipse at 52% 58%, #B0C2DA 0%, #AACAE6 35%, #B8D8F0 100%)'},
+  {stop:1.00,bg:'radial-gradient(ellipse at 50% 50%, #ACC0D8 0%, #A8CCE8 35%, #BCDAF0 100%)'},
+];
+const gradBg=document.getElementById('gradient-bg');
+let lastG=0;
+function updateGrad(){const s=window.scrollY/(document.body.scrollHeight-window.innerHeight)||0;for(let i=grads.length-1;i>=0;i--){if(s>=grads[i].stop){if(i!==lastG){gradBg.style.background=grads[i].bg;lastG=i;}break;}}}
+window.addEventListener('scroll',updateGrad,{passive:true});updateGrad();
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const states=[
+  {name:'Delta Waves',freq:'4 Hz',body:'The deepest state of rest. Supports profound relaxation, physical healing, and cellular repair. The nervous system softens — the body does what it does best when finally given space to rest.'},
+  {name:'Theta Waves',freq:'6 Hz',body:'Resonates with the brain\'s theta state — supporting deep REM sleep, vivid dreaming, and emotional healing. A gentle frequency for inner connection and the release of anxiety and stress.'},
+  {name:'Grounding',freq:'7.83 Hz',body:'Earth\'s own electromagnetic heartbeat. Supports mood stability, inner stillness, and a deep sense of calm. A return to natural rhythm — and to yourself.'},
+  {name:'Release',freq:'396 Hz',body:'Liberation from fear, guilt, and energetic weight. This frequency gently dissolves what the body has been holding — restoring a sense of groundedness and inner stability.'},
+  {name:'Harmony',freq:'432 Hz',body:'A warm, natural tone tuned to the frequency of the Earth. Encourages emotional balance, mental ease, and a quiet sense of being held by something larger than the noise of the day.'},
+  {name:'Renewal',freq:'528 Hz',body:'Known as the frequency of love. Supports compassion, cellular healing, and inner peace. Associated with elevated oxytocin — the body\'s natural signal that all is well.'},
+  {name:'Connection',freq:'639 Hz',body:'The frequency of the heart. Supports communication, forgiveness, and emotional balance — deepening connection with others and with yourself.'},
+  {name:'Clarity',freq:'741 Hz',body:'Encourages expression, intuition, and emotional release. Supports the mind\'s capacity to dissolve fog and speak clearly — from the inside out.'},
+  {name:'Awareness',freq:'852 Hz',body:'A frequency of awakening and expanded perception. Dissolves overthinking and illusion — returning the mind to serenity, inner guidance, and spiritual presence.'},
+  {name:'Reset',freq:'880 Hz',body:'A full-body reset. Supports nervous system recalibration, emotional release, and elevated mood. When you need to clear the field and begin again — this is where you start.'},
+];
+const grid=document.getElementById('statesGrid');
+states.forEach((s,i)=>{
+  const c=document.createElement('div');
+  c.className='es-card frost reveal'+(i%4?' r'+(i%4):'');
+  c.innerHTML=`<div class="es-name">${s.name}</div><span class="es-freq">${s.freq}</span><p class="es-body">${s.body}</p>`;
+  grid.appendChild(c);obs.observe(c);
+});
+// AMBIENT FULL-PAGE WAVE
+(function(){
+  const canvas = document.getElementById('ambientWave');
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
+
+  // Sections where wave appears (by id). Wave smoothly fades in/out.
+  const waveZones = ['etymology','first-breath','benefits','story-teaser','shop'];
+
+  // 6 layered ribbons — slow, organic, calming
+  const waves = [
+    {amp:42, freq:0.0050, speed:0.0048, yFrac:0.48, r:122, g:74,  b:40,  alpha:0.14, width:2.0},
+    {amp:28, freq:0.0068, speed:0.0035, yFrac:0.53, r:160, g:110, b:200, alpha:0.10, width:1.6},
+    {amp:54, freq:0.0035, speed:0.0025, yFrac:0.43, r:90,  g:60,  b:160, alpha:0.08, width:3.0},
+    {amp:20, freq:0.0085, speed:0.0060, yFrac:0.57, r:122, g:74,  b:40,  alpha:0.07, width:1.2},
+    {amp:34, freq:0.0058, speed:0.0038, yFrac:0.39, r:180, g:140, b:210, alpha:0.07, width:1.5},
+    {amp:24, freq:0.0045, speed:0.0030, yFrac:0.62, r:100, g:80,  b:180, alpha:0.05, width:1.0},
+  ];
+
+  let currentAlpha = 0, targetAlpha = 0;
+
+  function resize(){
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function getTarget(){
+    for(const id of waveZones){
+      const el = document.getElementById(id);
+      if(!el) continue;
+      const rect = el.getBoundingClientRect();
+      if(rect.top < H * 0.65 && rect.bottom > H * 0.35) return 1;
+    }
+    return 0;
+  }
+
+  function drawRibbon(w, masterAlpha){
+    const yMid = H * w.yFrac;
+    const a = w.alpha * masterAlpha;
+
+    // Glow halo
+    ctx.beginPath();
+    for(let x = 0; x <= W; x += 3){
+      const p = x * w.freq + t * w.speed * 80;
+      const y = yMid
+        + Math.sin(p)             * w.amp
+        + Math.sin(p*1.61+1.0)   * w.amp * 0.36
+        + Math.sin(p*0.43+2.3)   * w.amp * 0.20;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = `rgba(${w.r},${w.g},${w.b},${a*0.30})`;
+    ctx.lineWidth   = w.width * 6;
+    ctx.stroke();
+
+    // Core line
+    ctx.beginPath();
+    for(let x = 0; x <= W; x += 3){
+      const p = x * w.freq + t * w.speed * 80;
+      const y = yMid
+        + Math.sin(p)             * w.amp
+        + Math.sin(p*1.61+1.0)   * w.amp * 0.36
+        + Math.sin(p*0.43+2.3)   * w.amp * 0.20;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = `rgba(${w.r},${w.g},${w.b},${a})`;
+    ctx.lineWidth   = w.width;
+    ctx.stroke();
+  }
+
+  function draw(){
+    targetAlpha  = getTarget();
+    currentAlpha += (targetAlpha - currentAlpha) * 0.022; // slow, dreamy fade
+
+    ctx.clearRect(0, 0, W, H);
+
+    if(currentAlpha > 0.004){
+      // Fade edges so wave dissolves into the sides naturally
+      const fadeW = W * 0.12;
+      ctx.save();
+      const mask = ctx.createLinearGradient(0,0,W,0);
+      mask.addColorStop(0,          'rgba(0,0,0,0)');
+      mask.addColorStop(fadeW/W,    'rgba(0,0,0,1)');
+      mask.addColorStop(1-fadeW/W,  'rgba(0,0,0,1)');
+      mask.addColorStop(1,          'rgba(0,0,0,0)');
+
+      // globalAlpha carries the scroll-driven fade
+      ctx.globalAlpha = Math.min(currentAlpha, 1);
+      waves.forEach(w => drawRibbon(w, 1));
+      ctx.restore();
+    }
+
+    t += 1/60;
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  draw();
+})();
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');
+}
+
+// SCROLLSPY
+(function(){
+  const spyItems = [
+    {id:"etymology",label:"Behind the Name"},
+    {id:"dual-life",label:"Every Stage of Life"},
+    {id:"pillars",label:"The Three Pillars"},
+    {id:"what-hzana",label:"What Hzana Is"},
+    {id:"every-state",label:"Designed for Every State"},
+    {id:"benefits",label:"The Benefits"}
+  ];
+  const rail = document.getElementById('scrollspy');
+  if(!rail) return;
+  spyItems.forEach(it => {
+    const el = document.createElement('div');
+    el.className = 'spy-item';
+    el.setAttribute('data-id', it.id);
+    el.innerHTML = '<span class="spy-label">' + it.label + '</span><div class="spy-line"></div>';
+    el.addEventListener('click', () => {
+      const target = document.getElementById(it.id);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    rail.appendChild(el);
+  });
+  function updateSpy() {
+    let active = null;
+    spyItems.forEach(it => {
+      const sec = document.getElementById(it.id);
+      if(!sec) return;
+      const rect = sec.getBoundingClientRect();
+      if(rect.top <= window.innerHeight * 0.5) active = it.id;
+    });
+    rail.querySelectorAll('.spy-item').forEach(el => {
+      el.classList.toggle('active', el.getAttribute('data-id') === active);
+    });
+  }
+  window.addEventListener('scroll', updateSpy, {passive:true});
+  updateSpy();
+})();
+
+</script>
+</body>
+</html>

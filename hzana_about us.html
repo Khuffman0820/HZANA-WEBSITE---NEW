@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About Us — Hzana</title>
+<style>
+@font-face{font-family:'Roslindale';src:local('Roslindale Display Medium'),local('Roslindale-DisplayMedium');font-weight:500;font-style:normal;font-display:swap;}
+@font-face{font-family:'Roslindale';src:local('Roslindale Display Italic'),local('Roslindale-DisplayItalic');font-weight:400;font-style:italic;font-display:swap;}
+@font-face{font-family:'Roslindale Text';src:local('Roslindale Text Regular'),local('Roslindale-TextRegular');font-weight:400;font-style:normal;font-display:swap;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Roslindale Text','Georgia',serif;background:#E8C8B8;color:#1A0E06;overflow-x:hidden;cursor:none;}
+.cursor{position:fixed;width:8px;height:8px;background:#7A4A28;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(122,74,40,0.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
+#gradient-bg{position:fixed;inset:0;z-index:0;transition:background 1.4s ease;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 60px;}
+.nav-top{display:flex;justify-content:center;padding:14px 0 8px;border-bottom:0.5px solid rgba(26,14,6,0.07);}
+.nav-top a{font-family:'Roslindale Text','Georgia',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(26,14,6,0.4);text-decoration:none;transition:color 0.3s;}
+.nav-top a:hover{color:#7A4A28;}
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;padding:12px 0;}
+.nav-logo{font-family:'Roslindale','Georgia',serif;font-size:22px;font-weight:500;letter-spacing:6px;color:#1A0E06;text-transform:uppercase;text-decoration:none;}
+.nav-links{display:flex;gap:40px;list-style:none;align-items:center;}
+.nav-links a{font-family:'Roslindale Text','Georgia',serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(26,14,6,0.5);text-decoration:none;transition:color 0.3s;}
+.nav-links a:hover,.nav-links a.active{color:#7A4A28;}
+.nav-shop{border:0.5px solid rgba(122,74,40,0.4);padding:8px 20px;border-radius:30px;}
+.section{position:relative;z-index:1;}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity 0.9s ease,transform 0.9s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.r1{transition-delay:0.1s;}.r2{transition-delay:0.22s;}.r3{transition-delay:0.36s;}.r4{transition-delay:0.5s;}
+.eyebrow{font-family:'Roslindale Text','Georgia',serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#7A4A28;display:block;margin-bottom:20px;}
+.frost{background:rgba(230,225,245,0.5);border:0.5px solid rgba(255,255,255,0.75);border-radius:16px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+.btn{display:inline-block;font-family:'Roslindale Text','Georgia',serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#1A0E06;border:1px solid rgba(26,14,6,0.35);padding:16px 44px;border-radius:40px;text-decoration:none;transition:background 0.3s;cursor:none;margin:0 8px;}
+.btn:hover{background:rgba(26,14,6,0.06);}
+.btn.primary{background:#1A0E06;color:#F5EDE0;}
+.btn.primary:hover{background:#2C1A0A;}
+footer{position:relative;z-index:1;border-top:0.5px solid rgba(122,74,40,0.12);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;}
+.footer-brand{font-family:'Roslindale','Georgia',serif;font-size:18px;letter-spacing:4px;color:rgba(26,14,6,0.3);text-transform:uppercase;font-weight:500;}
+.footer-note{font-family:'Roslindale','Georgia',serif;font-size:12px;font-style:italic;color:rgba(26,14,6,0.25);}
+.footer-links{display:flex;gap:32px;}
+.footer-links a{font-family:'Roslindale Text','Georgia',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(26,14,6,0.3);text-decoration:none;transition:color 0.3s;}
+.footer-links a:hover{color:#7A4A28;}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:170px 60px 80px;overflow:hidden;}
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none;animation:orbFloat 9s ease-in-out infinite;}
+.hero-orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(255,255,255,0.14) 0%,transparent 70%);top:-150px;right:-180px;}
+.hero-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%);bottom:-100px;left:-150px;animation-delay:-4s;}
+@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-28px) scale(1.04);}}
+.hero-title{font-family:'Roslindale','Georgia',serif;font-size:clamp(52px,8vw,108px);font-weight:500;line-height:0.92;color:#1A0E06;letter-spacing:-3px;margin-bottom:20px;}
+.hero-title em{font-style:italic;font-weight:400;color:#7A4A28;}
+.hero-sub{font-family:'Roslindale Text','Georgia',serif;font-size:16px;color:rgba(26,14,6,0.5);max-width:500px;line-height:1.9;}
+.scroll-line{width:1px;height:56px;background:linear-gradient(to bottom,#7A4A28,transparent);animation:sPulse 2.2s ease-in-out infinite;margin:48px auto 0;}
+@keyframes sPulse{0%,100%{opacity:0.3;}50%{opacity:0.9;}}
+
+/* VISION MISSION */
+#vision{padding:100px 60px;}
+.vm-head{text-align:center;margin-bottom:52px;}
+.vm-head h2{font-family:'Roslindale','Georgia',serif;font-size:clamp(34px,5vw,56px);font-weight:500;color:#1A0E06;line-height:1.05;margin-bottom:10px;}
+.vm-head h2 em{font-style:italic;font-weight:400;color:#7A4A28;}
+.vm-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1000px;margin:0 auto;}
+.vm-card{padding:56px 48px;transition:background 0.3s;}
+.vm-card:hover{background:rgba(230,225,245,0.72);}
+.vm-label{font-family:'Roslindale Text','Georgia',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(122,74,40,0.5);margin-bottom:18px;display:block;}
+.vm-title{font-family:'Roslindale','Georgia',serif;font-size:clamp(24px,3vw,36px);font-weight:500;color:#1A0E06;line-height:1.15;margin-bottom:18px;}
+.vm-title em{font-style:italic;font-weight:400;color:#7A4A28;}
+.vm-body{font-family:'Roslindale Text','Georgia',serif;font-size:14px;color:rgba(26,14,6,0.6);line-height:2;}
+
+/* MANIFESTO */
+#manifesto{padding:60px 60px 80px;display:flex;justify-content:center;}
+.mf-card{max-width:940px;width:100%;padding:64px 72px;position:relative;}
+.mf-card::before,.mf-card::after{content:'';position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(122,74,40,0.25),transparent);}
+.mf-card::before{top:0;}.mf-card::after{bottom:0;}
+.mf-text{font-family:'Roslindale','Georgia',serif;font-size:clamp(15px,1.9vw,20px);font-weight:500;color:#1A0E06;line-height:1.8;letter-spacing:0.3px;}
+.mf-text em{font-style:italic;font-weight:400;color:#7A4A28;}
+
+/* CORE VALUES */
+#values{padding:80px 60px 100px;}
+.val-layout{display:grid;grid-template-columns:300px 1fr;gap:72px;max-width:1100px;margin:0 auto;align-items:start;}
+.val-left{position:sticky;top:120px;}
+.val-left h2{font-family:'Roslindale','Georgia',serif;font-size:clamp(32px,4vw,48px);font-weight:500;color:#1A0E06;line-height:1.05;margin-bottom:18px;}
+.val-left h2 em{font-style:italic;font-weight:400;color:#7A4A28;}
+.val-left p{font-family:'Roslindale Text','Georgia',serif;font-size:13px;color:rgba(26,14,6,0.5);line-height:1.9;}
+.val-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.val-card{padding:34px 26px;transition:background 0.3s,transform 0.3s;}
+.val-card:hover{background:rgba(230,225,245,0.72);transform:translateY(-3px);}
+.val-icon{font-size:22px;margin-bottom:14px;display:block;}
+.val-title{font-family:'Roslindale','Georgia',serif;font-size:17px;font-weight:500;color:#1A0E06;margin-bottom:8px;line-height:1.2;}
+.val-body{font-family:'Roslindale Text','Georgia',serif;font-size:12.5px;color:rgba(26,14,6,0.55);line-height:1.85;}
+
+/* JOURNEY / OUR STORY */
+#journey{padding:80px 60px 100px;display:flex;justify-content:center;}
+.jn-inner{max-width:800px;width:100%;}
+.jn-pull{font-family:'Roslindale','Georgia',serif;font-size:clamp(26px,3.5vw,42px);font-weight:300;font-style:italic;color:#1A0E06;line-height:1.45;margin-bottom:52px;padding-left:28px;border-left:2px solid rgba(122,74,40,0.25);}
+.jn-text{font-family:'Roslindale Text','Georgia',serif;font-size:16px;line-height:2;color:rgba(26,14,6,0.68);margin-bottom:28px;}
+.jn-text strong{font-weight:500;color:#1A0E06;}
+.jn-break{display:flex;align-items:center;gap:20px;margin:40px 0;}
+.jn-break-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(122,74,40,0.2),transparent);}
+.jn-break-glyph{font-family:'Roslindale','Georgia',serif;font-size:18px;color:rgba(122,74,40,0.3);font-style:italic;}
+.jn-climax{font-family:'Roslindale','Georgia',serif;font-size:clamp(22px,2.8vw,32px);font-style:italic;color:#1A0E06;font-weight:400;line-height:1.5;margin:40px 0;}
+.jn-ending{font-family:'Roslindale','Georgia',serif;font-size:18px;font-style:italic;color:rgba(26,14,6,0.55);line-height:1.8;margin-top:8px;}
+
+/* SUSTAINABILITY */
+#sustainability{padding:80px 60px 100px;}
+.sus-head{text-align:center;margin-bottom:52px;}
+.sus-head h2{font-family:'Roslindale','Georgia',serif;font-size:clamp(32px,4.5vw,52px);font-weight:500;color:#1A0E06;line-height:1.05;margin-bottom:10px;}
+.sus-head h2 em{font-style:italic;font-weight:400;color:#7A4A28;}
+.sus-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:920px;margin:0 auto;}
+.sus-card{padding:44px 32px;transition:background 0.3s,transform 0.3s;}
+.sus-card:hover{background:rgba(230,225,245,0.72);transform:translateY(-4px);}
+.sus-num{font-family:'Roslindale','Georgia',serif;font-size:52px;font-weight:500;color:rgba(122,74,40,0.1);line-height:1;margin-bottom:14px;}
+.sus-title{font-family:'Roslindale','Georgia',serif;font-size:20px;font-weight:500;color:#1A0E06;margin-bottom:10px;}
+.sus-body{font-family:'Roslindale Text','Georgia',serif;font-size:13px;color:rgba(26,14,6,0.55);line-height:1.9;}
+
+/* FOUNDERS */
+#founders{padding:80px 60px 100px;}
+.fo-head{text-align:center;margin-bottom:64px;}
+.fo-head h2{font-family:'Roslindale','Georgia',serif;font-size:clamp(36px,5vw,60px);font-weight:500;color:#1A0E06;line-height:1.1;margin-bottom:14px;}
+.fo-head h2 em{font-style:italic;font-weight:400;color:#7A4A28;}
+.fo-head p{font-family:'Roslindale Text','Georgia',serif;font-size:15px;color:rgba(26,14,6,0.5);max-width:540px;margin:0 auto;line-height:2;}
+.fo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1060px;margin:0 auto;}
+.fo-card{border-radius:20px;overflow:hidden;position:relative;min-height:560px;display:flex;flex-direction:column;justify-content:flex-end;}
+.fo-photo{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.fo-photo-kate{background:linear-gradient(160deg,#C4A090 0%,#B08878 40%,#9A7060 100%);}
+.fo-photo-gonzalo{background:linear-gradient(160deg,#A09BB0 0%,#9090A8 40%,#787090 100%);}
+.fo-photo-init{font-family:'Roslindale','Georgia',serif;font-size:100px;font-weight:500;color:rgba(255,255,255,0.05);letter-spacing:-4px;user-select:none;}
+.fo-overlay{position:relative;z-index:2;padding:44px 36px;background:linear-gradient(to top,rgba(0,0,0,0.78) 0%,rgba(0,0,0,0.4) 55%,transparent 100%);}
+.fo-name{font-family:'Roslindale','Georgia',serif;font-size:26px;font-weight:500;color:#fff;margin-bottom:5px;}
+.fo-role{font-family:'Roslindale Text','Georgia',serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:18px;display:block;}
+.fo-bio{font-family:'Roslindale Text','Georgia',serif;font-size:13px;color:rgba(255,255,255,0.68);line-height:1.85;}
+
+/* CTA */
+#cta{padding:140px 60px;text-align:center;}
+.cta-title{font-family:'Roslindale','Georgia',serif;font-size:clamp(44px,7.5vw,88px);font-weight:500;color:#1A0E06;line-height:0.95;letter-spacing:-2px;margin-bottom:18px;}
+.cta-title em{font-style:italic;font-weight:400;color:#7A4A28;}
+.cta-sub{font-family:'Roslindale Text','Georgia',serif;font-size:15px;color:rgba(26,14,6,0.4);margin-bottom:40px;letter-spacing:0.5px;}
+
+/* SCROLLSPY RAIL */
+#scrollspy{position:fixed;right:32px;top:50%;transform:translateY(-50%);z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:0;pointer-events:none;}
+.spy-item{display:flex;align-items:center;gap:12px;padding:10px 0;pointer-events:auto;cursor:pointer;opacity:0.22;transition:opacity 0.5s ease;}
+.spy-item:hover,.spy-item.active{opacity:1;}
+.spy-line{width:20px;height:0.5px;background:#7A4A28;transition:width 0.5s ease,background 0.5s ease;flex-shrink:0;}
+.spy-item.active .spy-line{width:32px;background:#7A4A28;}
+.spy-label{font-family:'Roslindale Text','Georgia',serif;font-size:7.5px;letter-spacing:3px;text-transform:uppercase;color:#7A4A28;white-space:nowrap;text-align:right;transition:color 0.5s;}
+
+#ambientWave{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;}
+</style>
+</head>
+<body>
+<canvas id="ambientWave"></canvas>
+<div id="scrollspy"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div id="gradient-bg"></div>
+
+<nav>
+  <div class="nav-top">
+    <a href="hzana_device.html#sounds">Explore the Sounds</a>
+  </div>
+  <div class="nav-bottom">
+    <a href="hzana_homepage.html" class="nav-logo">Hzana</a>
+    <ul class="nav-links">
+      <li><a href="hzana_homepage.html">Home</a></li>
+      <li><a href="hzana_device.html">The Device</a></li>
+      <li><a href="hzana_about.html" class="active">About Us</a></li>
+      <li><a href="#cta" class="nav-shop">Shop</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="section" id="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;">
+    <span class="eyebrow reveal">We Are Hzana</span>
+    <h1 class="hero-title reveal r1">Creating modern wellness<br/>technology that <em>heals</em><br/>from the inside out.</h1>
+    <p class="hero-sub reveal r2">A powerhouse of design, sound, and intention — pioneering a new era of healing frequency technology.</p>
+    <div class="scroll-line reveal r3"></div>
+  </div>
+</section>
+
+<!-- VISION + MISSION -->
+<section class="section" id="vision">
+  <div class="vm-head">
+    <span class="eyebrow reveal" style="text-align:center;">The Dream · The Drive</span>
+    <h2 class="reveal r1">Our Vision.<br/><em>Our Mission.</em></h2>
+  </div>
+  <div class="vm-grid">
+    <div class="vm-card frost reveal r1">
+      <span class="vm-label">Our Vision</span>
+      <h3 class="vm-title">A world where <em>healing</em> is within reach for everyone.</h3>
+      <p class="vm-body">We envision a future where frequency healing is not a luxury — it is a daily practice, as natural as sleep, as essential as breath. A world where the nervous system is understood, honored, and cared for at every stage of life.</p>
+    </div>
+    <div class="vm-card frost reveal r2">
+      <span class="vm-label">Our Mission</span>
+      <h3 class="vm-title">To make healing <em>beautiful,</em> accessible, and intentional.</h3>
+      <p class="vm-body">Hzana exists to bring the science of sound healing into everyday spaces — through devices that are as beautiful as they are effective, as simple as they are profound. Every detail is crafted to lower the barrier to stillness and raise the quality of rest.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="section" id="manifesto">
+  <div class="mf-card frost reveal">
+    <p class="mf-text">At Hzana, every decision is rooted in <em>harmony, intention, innovation, and sustainability.</em> We believe in the balance of science and soul — creating technology that is as beautiful as it is effective. Our products are designed for <em>accessible healing,</em> integrating seamlessly into daily life while elevating the spaces they touch. Guided by thoughtful design, environmental responsibility, and integrity, we strive to minimize our impact while maximizing wellness. We are building more than devices — <em>we are cultivating a community where wellness, connection, and care for the planet thrive.</em></p>
+  </div>
+</section>
+
+<!-- CORE VALUES -->
+<section class="section" id="values">
+  <div class="val-layout">
+    <div class="val-left reveal">
+      <span class="eyebrow">Our Core Values</span>
+      <h2>The Future We <em>Imagine.</em><br/>The Purpose We Live By.</h2>
+      <p style="margin-top:16px;">Six principles that guide every decision — from the frequencies we select to the packaging we ship in. Not aspirations. The foundation.</p>
+    </div>
+    <div class="val-grid">
+      <div class="val-card frost reveal r1"><span class="val-icon">✦</span><div class="val-title">Intentional Design</div><p class="val-body">Every detail matters. From the frequencies you hear to the materials you touch, Hzana is crafted to create experiences that are as beautiful as they are functional.</p></div>
+      <div class="val-card frost reveal r2"><span class="val-icon">◎</span><div class="val-title">Accessible Healing</div><p class="val-body">Wellness should feel effortless. Hzana integrates seamlessly into everyday life — at home, on the go, or winding down. Healing is always within reach.</p></div>
+      <div class="val-card frost reveal r3"><span class="val-icon">∞</span><div class="val-title">Science & Soul</div><p class="val-body">We prioritize real, science-backed benefits. By blending evidence-based innovation with intentional artistry, we create tools that don't just work — they resonate.</p></div>
+      <div class="val-card frost reveal r1"><span class="val-icon">◇</span><div class="val-title">Integrity & Intention</div><p class="val-body">Every decision — from technology to packaging — is made with care, purpose, and deep respect for both our customers and the planet.</p></div>
+      <div class="val-card frost reveal r2"><span class="val-icon">↗</span><div class="val-title">Continuous Growth</div><p class="val-body">We evolve with you. As Hzana grows, so do our technologies and offerings. Innovation is never static — it's a journey we take together.</p></div>
+      <div class="val-card frost reveal r3"><span class="val-icon">◯</span><div class="val-title">Community</div><p class="val-body">Hzana isn't just a product — it's a movement toward intentional living. We're building a community of people who value harmony, healing, and growth.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR JOURNEY -->
+<section class="section" id="journey">
+  <div class="jn-inner">
+    <span class="eyebrow reveal">Our Journey</span>
+    <p class="jn-pull reveal r1">"Hzana began during a time when we needed it most."</p>
+    <p class="jn-text reveal r2">Our first baby became seriously ill at just three months old — RSV and a persistent cough that made it nearly impossible for him to rest. We found ourselves searching for anything that could bring him comfort.</p>
+    <p class="jn-text reveal r2">In that season, we discovered the quiet power of <strong>healing frequencies</strong>. Within less than an hour of playing the sounds, he fell asleep for the first time in days — and slept deeply for hours. It felt like his body could finally relax.</p>
+    <div class="jn-break reveal r3"><div class="jn-break-line"></div><span class="jn-break-glyph">∿</span><div class="jn-break-line"></div></div>
+    <p class="jn-text reveal">Over the next few days, his breathing became calmer. More natural again. In the middle of fear and exhaustion, those same sounds became a daily anchor — bringing a sense of calm back into our home.</p>
+    <p class="jn-text reveal r1">In the years that followed, we returned to frequency healing again and again — whenever we were sick, overwhelmed, or simply needed to reset. But it wasn't until the birth of our second child that we began searching for a device that could bring these frequencies into our home in a simple, intentional way.</p>
+    <div class="jn-break reveal r2"><div class="jn-break-line"></div><span class="jn-break-glyph">∿</span><div class="jn-break-line"></div></div>
+    <p class="jn-climax reveal r2">It didn't exist.<br/>So we created Hzana.</p>
+    <p class="jn-text reveal r3">A device designed not just for sleep — but for stillness, restoration, and connection. As a reflection of where it all began, we included a frequency designed to support breath and relaxation — an homage to the moment that started it all.</p>
+    <p class="jn-ending reveal r3">What began as something for our children became something for us — and now, for you.</p>
+  </div>
+</section>
+
+<!-- SUSTAINABILITY -->
+<section class="section" id="sustainability">
+  <div style="max-width:900px;margin:0 auto;padding:80px 60px 100px;">
+    <span class="eyebrow reveal" style="text-align:center;display:block;">Sustainability</span>
+    <h2 style="font-family:'Roslindale','Georgia',serif;font-size:clamp(30px,4vw,48px);font-weight:500;color:#1A0E06;line-height:1.1;text-align:center;margin-bottom:40px;" class="reveal r1">Thoughtfully designed<br/>for you — <em style="font-style:italic;color:#7A4A28;">and the planet.</em></h2>
+    <div class="frost reveal r2" style="padding:56px 64px;">
+      <p style="font-family:'Roslindale Text','Georgia',serif;font-size:16px;color:rgba(26,14,6,0.68);line-height:2.1;margin-bottom:24px;">Hzana is crafted with care, using ethically sourced materials and built to last. Because true wellness should never come at the planet's expense.</p>
+      <p style="font-family:'Roslindale Text','Georgia',serif;font-size:16px;color:rgba(26,14,6,0.68);line-height:2.1;margin-bottom:24px;">Our packaging is minimal, biodegradable, and completely free from unnecessary plastics. From EMF-free technology and headphone-ready listening to eco-conscious design choices, every detail of Hzana is made to support your well-being while being gentle on the Earth.</p>
+      <p style="font-family:'Roslindale','Georgia',serif;font-size:20px;font-style:italic;color:#1A0E06;line-height:1.7;">Wellness that feels good — and does good.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDERS -->
+<section class="section" id="founders">
+  <div class="fo-head">
+    <span class="eyebrow reveal" style="text-align:center;">The People Behind Hzana</span>
+    <h2 class="reveal r1">Meet the <em>Founders</em></h2>
+    <p class="reveal r2">A powerhouse husband-and-wife duo whose complementary talents — in design, sound, and business — converge to pioneer a new era of healing frequency technology.</p>
+  </div>
+  <div class="fo-grid">
+    <div class="fo-card reveal r1">
+      <div class="fo-photo fo-photo-kate"><div class="fo-photo-init">KH</div></div>
+      <div class="fo-overlay">
+        <div class="fo-name">Kate Huffman</div>
+        <span class="fo-role">Founder · Creative Director · Business Strategist</span>
+        <p class="fo-bio">Kate is the visionary and driving force behind Hzana. She leads operations, product development, and strategy — merging artistry with execution to ensure every detail of Hzana's vision becomes a high-quality product that ships and scales. Every Hzana machine has been conceptualized and designed entirely by Kate, from the earliest sketches to final production. With a rare ability to blend creativity and precision, Kate ensures that Hzana's products deliver healing and harmony while standing at the intersection of design, innovation, and scalable business.</p>
+      </div>
+    </div>
+    <div class="fo-card reveal r2">
+      <div class="fo-photo fo-photo-gonzalo"><div class="fo-photo-init">GM</div></div>
+      <div class="fo-overlay">
+        <div class="fo-name">Gonzalo Marroquin</div>
+        <span class="fo-role">Co-Founder · Creative Director · Sound Designer</span>
+        <p class="fo-bio">Gonzalo shapes Hzana's sonic identity — creating proprietary healing frequencies blended with immersive soundscapes. As the creative force behind the brand's audio experience and storytelling, he brings a unique blend of artistic vision and analytical discipline. After leaving a career in corporate law, Gonzalo pursued the arts — first as a photojournalist in Guatemala, then as an actor, photographer, and DJ in New York. His deep expertise in sound and sensory design is central to Hzana's mission of audio-driven wellness.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" id="cta">
+  <span class="eyebrow reveal" style="text-align:center;display:block;">Hzana™ · Patent Pending · HZ-01 SOL</span>
+  <h2 class="cta-title reveal r1">Bring stillness<br/>into your <em>home</em></h2>
+  <p class="cta-sub reveal r2">Designed with intention. Made with love.</p>
+  <div class="reveal r3">
+    <a href="#" class="btn primary">Shop Hzana</a>
+    <a href="hzana_device.html" class="btn">The Device</a>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">Hzana</span>
+  <span class="footer-note">Healing through sound.</span>
+  <div class="footer-links">
+    <a href="hzana_homepage.html">Home</a>
+    <a href="hzana_device.html">The Device</a>
+  </div>
+</footer>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function anim(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+const grads=[
+  {stop:0,   bg:'radial-gradient(ellipse at 60% 40%, #E8C8B8 0%, #DDB8A8 35%, #C8B8C0 100%)'},
+  {stop:0.12,bg:'radial-gradient(ellipse at 35% 55%, #E2C0B0 0%, #D4B0A8 35%, #C4B0C8 100%)'},
+  {stop:0.24,bg:'radial-gradient(ellipse at 65% 38%, #D8B8C0 0%, #CAA8C0 35%, #B8B0D0 100%)'},
+  {stop:0.36,bg:'radial-gradient(ellipse at 30% 58%, #CEB8C8 0%, #C0A8D0 35%, #ACBAD8 100%)'},
+  {stop:0.48,bg:'radial-gradient(ellipse at 70% 42%, #C4B4D0 0%, #B4B0D8 35%, #A4C0E0 100%)'},
+  {stop:0.60,bg:'radial-gradient(ellipse at 42% 60%, #BCBAD4 0%, #AEC0DC 35%, #A8CAE4 100%)'},
+  {stop:0.72,bg:'radial-gradient(ellipse at 58% 44%, #B8BED8 0%, #B0C4E0 35%, #B0D0E8 100%)'},
+  {stop:0.84,bg:'radial-gradient(ellipse at 38% 54%, #B4C0D8 0%, #AEC8E4 35%, #B4D4EC 100%)'},
+  {stop:1.00,bg:'radial-gradient(ellipse at 50% 50%, #ACC0D8 0%, #A8CCE8 35%, #BCDAF0 100%)'},
+];
+const gradBg=document.getElementById('gradient-bg');
+let lastG=0;
+function updateGrad(){const s=window.scrollY/(document.body.scrollHeight-window.innerHeight)||0;for(let i=grads.length-1;i>=0;i--){if(s>=grads[i].stop){if(i!==lastG){gradBg.style.background=grads[i].bg;lastG=i;}break;}}}
+window.addEventListener('scroll',updateGrad,{passive:true});updateGrad();
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// AMBIENT WAVE - ABOUT PAGE
+(function(){
+  const canvas = document.getElementById('ambientWave');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
+  const waveZones = ['vision','manifesto','journey','sustainability','cta'];
+  const waves = [
+    {amp:42,freq:0.0050,speed:0.0048,yFrac:0.48,r:122,g:74, b:40, alpha:0.14,width:2.0},
+    {amp:28,freq:0.0068,speed:0.0035,yFrac:0.53,r:160,g:110,b:200,alpha:0.10,width:1.6},
+    {amp:54,freq:0.0035,speed:0.0025,yFrac:0.43,r:90, g:60, b:160,alpha:0.08,width:3.0},
+    {amp:20,freq:0.0085,speed:0.0060,yFrac:0.57,r:122,g:74, b:40, alpha:0.07,width:1.2},
+    {amp:34,freq:0.0058,speed:0.0038,yFrac:0.39,r:180,g:140,b:210,alpha:0.07,width:1.5},
+  ];
+  let cur=0,tgt=0;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  function getTarget(){
+    for(const id of waveZones){const el=document.getElementById(id);if(!el)continue;const r=el.getBoundingClientRect();if(r.top<H*0.65&&r.bottom>H*0.35)return 1;}
+    return 0;
+  }
+  function drawRibbon(w,a){
+    const yMid=H*w.yFrac,al=w.alpha*a;
+    const draw=(lw,alpha)=>{
+      ctx.beginPath();
+      for(let x=0;x<=W;x+=3){
+        const p=x*w.freq+t*w.speed*80;
+        const y=yMid+Math.sin(p)*w.amp+Math.sin(p*1.61+1)*w.amp*0.36+Math.sin(p*0.43+2.3)*w.amp*0.20;
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.strokeStyle=`rgba(${w.r},${w.g},${w.b},${alpha})`;ctx.lineWidth=lw;ctx.stroke();
+    };
+    draw(w.width*6,al*0.30);draw(w.width,al);
+  }
+  function draw(){
+    tgt=getTarget();cur+=(tgt-cur)*0.022;
+    ctx.clearRect(0,0,W,H);
+    if(cur>0.004){ctx.save();ctx.globalAlpha=Math.min(cur,1);waves.forEach(w=>drawRibbon(w,1));ctx.restore();}
+    t+=1/60;requestAnimationFrame(draw);
+  }
+  resize();window.addEventListener('resize',resize);draw();
+})();
+
+// SCROLLSPY
+(function(){
+  const spyItems = [
+    {id:"vision",label:"Our Vision & Mission"},
+    {id:"values",label:"Our Core Values"},
+    {id:"journey",label:"Our Journey"},
+    {id:"sustainability",label:"Sustainability"},
+    {id:"founders",label:"The Founders"}
+  ];
+  const rail = document.getElementById('scrollspy');
+  if(!rail) return;
+  spyItems.forEach(it => {
+    const el = document.createElement('div');
+    el.className = 'spy-item';
+    el.setAttribute('data-id', it.id);
+    el.innerHTML = '<span class="spy-label">' + it.label + '</span><div class="spy-line"></div>';
+    el.addEventListener('click', () => {
+      const target = document.getElementById(it.id);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    rail.appendChild(el);
+  });
+  function updateSpy() {
+    let active = null;
+    spyItems.forEach(it => {
+      const sec = document.getElementById(it.id);
+      if(!sec) return;
+      const rect = sec.getBoundingClientRect();
+      if(rect.top <= window.innerHeight * 0.5) active = it.id;
+    });
+    rail.querySelectorAll('.spy-item').forEach(el => {
+      el.classList.toggle('active', el.getAttribute('data-id') === active);
+    });
+  }
+  window.addEventListener('scroll', updateSpy, {passive:true});
+  updateSpy();
+})();
+
+</script>
+</body>
+</html>
